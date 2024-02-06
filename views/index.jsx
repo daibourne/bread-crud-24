@@ -7,7 +7,9 @@ const Index = ({ breads }) => {
             <h2>Index page</h2>
             <ul>
                 {breads.map((bread) => (
-                    <li key={bread.name}>{bread.name}</li>
+                    <li key={bread.name}>
+                    <a href={`/breads/${Index}`}>{bread.name}</a>
+                    </li>
                 ))}
             </ul>
         </Default>
