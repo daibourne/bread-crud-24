@@ -40,7 +40,7 @@ router.post('/', (req, res) => {
 });
 
 // UPDATE
-breads.put('/:arrayIndex' , (req, res) => {
+router.put('/:arrayIndex' , (req, res) => {
     if(req.body.hasGluten === 'on'){
         req.body.hasGluten = true
     } else {
@@ -50,7 +50,7 @@ breads.put('/:arrayIndex' , (req, res) => {
 });
 
 // EDIT
-breads.get('/:indexArray/edit', (req, res) => {
+router.get('/:indexArray/edit', (req, res) => {
     res.render('edit', {
       bread: Bread[req.params.indexArray],
       index: req.params.indexArray

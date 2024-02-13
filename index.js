@@ -1,11 +1,24 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const app = express();
+const mongoose = require('mongoose');
 
 // CONFIG
 require('dotenv').config();
 const PORT = process.env.PORT;
+const MONGO_URI = process.env.MONGO_URI;
 console.log(PORT);
+
+// Database Connection
+mongoose
+    .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('connected to mongo: ' + MONGO_URI);
+    })
+    .catch((err) => {
+        console.log('Error connecting to mongo: ' + err);
+    });
+
 
 // MIDDLEWARE
 app.use(express.static('public'));
