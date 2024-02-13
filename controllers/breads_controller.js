@@ -2,25 +2,42 @@ const express = require('express');
 const router = express.Router();
 const Bread = require('../models/bread');
 const render = require('../render');
-const bread = require('../models/bread');
+// const bread = require('../models/bread');
 
 // List Route
-
+router.get('/', (req, res) => {
+    // res.send(render('Index', { breads: Bread }));
+    Bread.find().then((breads) => {
+        res.send(render('Index', { breads: breads }));
+    })
+});
 
 // New Route
-router.get('/', (req, res) => {
-    res.send(render('Index', { breads: Bread}));
+router.get('/new', (req, res) => {
+    res.send(render('New'));
 });
 
+// router.get('/', (req, res) => {
+//     res.send(render('Index', { breads: Bread}));
+// });
+
 // Detail Route
-router.get('/:arrayIndex', (req, res) => {
-    if (Bread[req.params.arrayIndex]){
-        res.send(render('Show', { bread: Bread[req.params.arrayIndex], index: req.params.arrayIndex })
-        );
-    } else {
-        res.status(404).send('404. Page not found.');
-    }
+router.get('/:id', (req, res) => {
+    Bread.findById(req.params.id).then((bread) => {
+        res.send(render('Show' ,{ bread: bread }));
+    }).catch((err) => {
+        console.log(err)
+    })
 });
+
+// router.get('/:arrayIndex', (req, res) => {
+//     if (Bread[req.params.arrayIndex]){
+//         res.send(render('Show', { bread: Bread[req.params.arrayIndex], index: req.params.arrayIndex })
+//         );
+//     } else {
+//         res.status(404).send('404. Page not found.');
+//     }
+// });
 
 // Delete Route
 router.delete('/:arrayIndex', (req, res) => {
@@ -35,8 +52,8 @@ router.post('/', (req, res) => {
     } else {
         req.body.hasGluten = flase;
     }
-    Bread.push(req.body);
-    res.redirect('.breads');
+    Bread.create(req.body);
+    res.redirect('/breads');
 });
 
 // UPDATE

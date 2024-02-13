@@ -8,7 +8,7 @@ const Index = ({ breads }) => {
             <ul>
                 {breads.map((bread) => (
                     <li key={bread.name}>
-                    <a href={`/breads/${Index}`}>{bread.name}</a>
+                    <a href={`/breads/${bread.id}`}>{bread.name}</a>
                     </li>
                 ))}
             </ul>
