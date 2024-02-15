@@ -2,47 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Bread = require('../models/bread');
 const render = require('../render');
-// const bread = require('../models/bread');
 
-// List Route
-router.get('/', (req, res) => {
-    // res.send(render('Index', { breads: Bread }));
-    Bread.find().then((breads) => {
-        res.send(render('Index', { breads: breads }));
-    })
-});
-
-// New Route
+// New Route Form
 router.get('/new', (req, res) => {
+    // res.render('New');
     res.send(render('New'));
-});
-
-// router.get('/', (req, res) => {
-//     res.send(render('Index', { breads: Bread}));
-// });
-
-// Detail Route
-router.get('/:id', (req, res) => {
-    Bread.findById(req.params.id).then((bread) => {
-        res.send(render('Show' ,{ bread: bread }));
-    }).catch((err) => {
-        console.log(err)
-    })
-});
-
-// router.get('/:arrayIndex', (req, res) => {
-//     if (Bread[req.params.arrayIndex]){
-//         res.send(render('Show', { bread: Bread[req.params.arrayIndex], index: req.params.arrayIndex })
-//         );
-//     } else {
-//         res.status(404).send('404. Page not found.');
-//     }
-// });
-
-// Delete Route
-router.delete('/:arrayIndex', (req, res) => {
-    Bread.splice(req.params.arrayIndex, 1);
-    res.status(303).redirect('/breads');
 });
 
 // Create Route
@@ -50,29 +14,77 @@ router.post('/', (req, res) => {
     if (req.body.hasGluten === 'on') {
         req.body.hasGluten = true;
     } else {
-        req.body.hasGluten = flase;
+        req.body.hasGluten = false;
+    }
+    if (req.body.image === '') {
+        delete req.body.image;
     }
     Bread.create(req.body);
     res.redirect('/breads');
 });
 
-// UPDATE
-router.put('/:arrayIndex' , (req, res) => {
-    if(req.body.hasGluten === 'on'){
-        req.body.hasGluten = true
+// List Route
+router.get('/', (req, res) => {
+    // res.render('Index', { breads: Bread });
+    // res.send(render('Index', { breads: Bread }));
+
+    Bread.find().then((breads) => {
+        console.log(breads);
+        // res.render('Index', { breads: breads });
+        res.send(render('Index', { breads: breads }));
+    });
+});
+
+// Detail Route
+router.get('/:id', (req, res) => {
+    Bread.findById(req.params.id)
+        .then((bread) => {
+            // res.render('Show', { bread: bread });
+            res.send(render('Show', { bread: bread }));
+        })
+        .catch((err) => {
+            res.status(404).send('Unable to find Timmy. :(');
+        });
+});
+
+// Edit Route Form
+router.get('/:id/edit', (req, res) => {
+    Bread.findById(req.params.id)
+        .then((bread) => {
+            // res.render('Edit', { bread: bread });
+            res.send(render('Edit', { bread: bread }));
+        })
+        .catch((err) => {
+            res.status(404).send('Unable to find Timmy. :(');
+        });
+});
+
+// Edit Route
+router.put('/:id', (req, res) => {
+    if (req.body.hasGluten === 'on') {
+        req.body.hasGluten = true;
     } else {
-        req.body.hasGluten = false
+        req.body.hasGluten = false;
     }
-    Bread[req.params.arrayIndex] = req.bodyres.redirect(`/breads/${req.params.arrayIndex}`)
+    if (req.body.image === '') {
+        delete req.body.image;
+    }
+    Bread.findByIdAndUpdate(req.params.id, req.body, { new: true }).then((updatedBread) => {
+        console.log(updatedBread);
+        res.redirect(`/breads/${updatedBread.id}`);
+    });
 });
 
-// EDIT
-router.get('/:indexArray/edit', (req, res) => {
-    res.render('edit', {
-      bread: Bread[req.params.indexArray],
-      index: req.params.indexArray
-    })
+// Delete Route
+router.delete('/:id', (req, res) => {
+    Bread.findByIdAndDelete(req.params.id)
+        .then((deletedBread) => {
+            res.status(303).redirect('/breads');
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(404).send('Unable to delete Timmy. :(');
+        });
 });
-
 
 module.exports = router;

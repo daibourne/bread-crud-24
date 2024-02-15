@@ -1,7 +1,7 @@
 const React = require('react');
 const Default = require('./layouts/Default');
 
-const Show = ({ bread, index }) => {
+const Show = ({ bread }) => {
     return (
         <Default>
             <h2>Show Page</h2>
