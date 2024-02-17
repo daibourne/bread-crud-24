@@ -12,6 +12,7 @@ const Show = ({ bread }) => {
                 have gluten.
             </p>
             <img src={bread.image} alt={bread.name} />
+            {bread.baker && <p>{bread.getBakedBy()}</p>}
             <li>
                 <a href='/breads'>Go home.</a>
             </li>
