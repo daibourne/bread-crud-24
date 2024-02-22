@@ -37,8 +37,13 @@ const New = ({ bakers }) => {
                 )
               })}
             </select>
-          <input type="submit"/>
-        </form>
+            <input type='submit' value='Create Bread' />
+            </form>
+            <div className='backButton'>
+                <a href='/breads'>
+                    <button>Go back to the index</button>
+                </a>
+            </div>
       </Default>
     )
 };

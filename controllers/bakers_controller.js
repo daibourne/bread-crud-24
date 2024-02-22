@@ -10,4 +10,19 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+    Baker.findById(req.params.id)
+    .populate('breads')
+    .then((baker) => {
+        res.send(render('BakerShow', {baker: baker}));
+    });
+});
+
+// Delete Route 
+router.delete('/:id', (req, res) => {
+    Baker.findByIdAndDelete(req.params.id).then((deletedBaker) => {
+        res.status(303).redirect('/breads');
+    });
+});
+
 module.exports = router;
