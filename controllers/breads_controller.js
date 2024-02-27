@@ -36,8 +36,10 @@ router.get('/', (req, res) => {
 
     Bread.find().then((breads) => {
         console.log(breads);
-        // res.render('Index', { breads: breads });
-        res.send(render('Index', { breads: breads }));
+        Baker.find().then((bakers) => {
+            // res.render('Index', { breads: breads });
+            res.send(render('Index', { breads: breads, bakers: bakers }));
+        });
     });
 });
 
